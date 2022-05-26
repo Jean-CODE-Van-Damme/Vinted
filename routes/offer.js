@@ -217,7 +217,7 @@ router.delete("/offer/delete", isAuthentificated, async (req, res) => {
   }
 });
 
-//Route pour retourner une offre selon les criteres demandes
+//Route qui retourner une offre selon les criteres demandes
 
 router.get("/offers", async (req, res) => {
   console.log("route/offers par critere");
