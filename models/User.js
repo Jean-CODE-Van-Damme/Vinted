@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-// crea model
 const User = mongoose.model("User", {
   email: {
     unique: true,
@@ -11,14 +10,12 @@ const User = mongoose.model("User", {
       required: true,
       type: String,
     },
-    avatar: Object, // nous verrons plus tard comment uploader une image
+    avatar: Object,
   },
   newsletter: Boolean,
   token: String,
   hash: String,
   salt: String,
-});                                            
-
-// export model
+});
 
 module.exports = User;

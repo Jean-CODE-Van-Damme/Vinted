@@ -13,9 +13,3 @@ const Offer = mongoose.model("Offer", {
 });
 
 module.exports = Offer;
-
-// on peut faire un destrucuring avec changement de nom et un double destructuring
-// const {
-//   userWithToken: owner,
-//   fields: { product_name, product_description, product_price },
-// } = req;
