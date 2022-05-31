@@ -28,7 +28,6 @@ router.post("/offer/publish", isAuthentificated, async (req, res) => {
               { COULEUR: color },
               { EMPLACEMENT: city },
             ],
-
             owner: req.userWithToken,
           });
 
@@ -38,7 +37,6 @@ router.post("/offer/publish", isAuthentificated, async (req, res) => {
           });
 
           newOffer.product_image = result;
-
           await newOffer.save();
 
           res.status(200).json({
@@ -90,7 +88,6 @@ router.put("/offer/modify", isAuthentificated, async (req, res) => {
     } = req.fields;
 
     const newPicture = req.files.picture;
-
     const offerToModify = await Offer.findById(id);
 
     if (String(req.userWithToken.id) === String(offerToModify.owner)) {
@@ -144,7 +141,6 @@ router.put("/offer/modify", isAuthentificated, async (req, res) => {
         await cloudinary.api.delete_resources_by_prefix(
           `api/vinted/offers/${id}`
         );
-
         const pictureToModify = await cloudinary.uploader.upload(
           req.files.picture.path,
           {
@@ -152,7 +148,6 @@ router.put("/offer/modify", isAuthentificated, async (req, res) => {
           }
         );
       }
-
       await offerToModify.save();
       res.status(200).json(offerToModify);
     } else {
@@ -175,9 +170,7 @@ router.delete("/offer/delete", isAuthentificated, async (req, res) => {
         );
 
         await cloudinary.api.delete_folder(`api/vinted/offers/${id}`);
-
         await offerisExist.deleteOne();
-
         res.status(200).json({ message: "Offer deleted" });
       } else {
         res
@@ -195,17 +188,14 @@ router.delete("/offer/delete", isAuthentificated, async (req, res) => {
 router.get("/offers", async (req, res) => {
   try {
     let { page, title, priceMax, priceMin, sort } = req.query;
-
     const filters = {};
 
     if (title) {
       filters.product_name = new RegExp(title, "i");
     }
-
     if (priceMin) {
       filters.product_price = { $gte: Number(priceMin) };
     }
-
     if (priceMax) {
       if (filters.product_price) {
         filters.product_price.$lte = Number(priceMax);
@@ -213,32 +203,24 @@ router.get("/offers", async (req, res) => {
         filters.product_price = { $lte: Number(priceMax) };
       }
     }
-
     if (!page) {
       page = 1;
     }
 
     const limitOffers = 3;
-
     let skipPage = limitOffers * page - limitOffers;
-
     let counter = 1;
     if (sort === "price-desc") {
       counter = -1;
     }
 
     const offersToFind = await Offer.find(filters)
-
       .select(
         "product_name product_price product_details product_image.secure_url product_description"
       )
-
       .sort({ product_price: counter })
-
       .skip(skipPage)
-
       .limit(limitOffers)
-
       .populate({
         path: "owner",
         select: "account.username id account.avatar.secure_url",
@@ -263,7 +245,6 @@ router.get("/offer/:id", async (req, res) => {
       .select(
         "product_name product_price product_details product_image.secure_url product_description"
       )
-
       .populate({
         path: "owner",
         select: "account.username id account.avatar.secure_url",

@@ -40,7 +40,6 @@ router.post("/user/signup", async (req, res) => {
           });
 
           await newUser.save();
-
           res.status(200).json({
             _id: newUser.id,
             token: token,
@@ -69,12 +68,9 @@ router.post("/user/login", async (req, res) => {
 
     if (email && password) {
       const userToFind = await User.findOne({ email: email });
-
       if (userToFind) {
         const newHash = SHA256(userToFind.salt + password).toString(encBase64);
-
         const hash = userToFind.hash;
-
         if (hash === newHash) {
           res.status(200).json({
             _id: userToFind.id,
