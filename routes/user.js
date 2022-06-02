@@ -13,7 +13,7 @@ router.post("/user/signup", async (req, res) => {
 
     const userSameMail = await User.findOne({ email: email });
     const userSameUsername = await User.findOne({
-      account: { username: username },
+      "account.username": username,
     });
 
     if (username && email && password && newsletter) {
